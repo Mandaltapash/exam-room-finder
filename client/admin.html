@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel - Upload CSV</title>
+</head>
+<body>
+    <h1>Admin Panel - Upload Roll Range CSV</h1>
+    <form id="uploadForm">
+        <input type="file" id="csvFile" accept=".csv" required />
+        <button type="submit">Upload CSV</button>
+    </form>
+    <div id="status"></div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const file = document.getElementById('csvFile').files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('http://localhost:3000/upload-csv', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('status').innerText = data;
+            })
+            .catch(err => {
+                document.getElementById('status').innerText = 'Upload failed: ' + err.message;
+            });
+        });
+    </script>
+</body>
+</html>
