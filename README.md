@@ -28,4 +28,12 @@ A simple web application that allows students to find their exam room, building,
 ---
 
 ## 📂 Folder Structure
+project-root/
+├── server/
+│ ├── index.js # Express backend server
+│ ├── data.csv # Your CSV file with room data
+│ └── package.json # Node dependencies
+├── public/
+│ └── index.html # Frontend HTML file
+└── README.md
 
