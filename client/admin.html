@@ -4,122 +4,639 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Panel - Upload CSV</title>
+    <title>Admin Panel - Exam Room Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
         
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            height: 100vh;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(to right, #e0ecff, #dbeeff), url('https://www.transparenttextures.com/patterns/cubes.png');
-            background-repeat: repeat;
+            position: relative;
+            overflow: hidden;
+            padding: 20px;
+            background-image: url('https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=1920&q=80');
             background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
         
         .container {
-            background-color: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(10px);
-            padding: 2.5rem;
-            border-radius: 14px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-            max-width: 420px;
-            width: 90%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1.75rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 25px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            max-width: 480px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            animation: slideUp 0.6s ease-out;
+            margin: auto;
+            transform: translateY(0);
+            transition: all 0.3s ease;
+        }
+        
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.3);
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .header {
             text-align: center;
+            margin-bottom: 1.5rem;
         }
         
         h1 {
-            margin-bottom: 1.6rem;
-            font-size: 1.5rem;
-            color: #2c3e50;
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.4rem;
+            letter-spacing: -0.02em;
         }
         
-        input[type="file"] {
-            margin-bottom: 1rem;
-            width: 100%;
-            padding: 0.6rem;
-            font-size: 0.95rem;
-            border-radius: 8px;
-            border: 1px solid #ccc;
+        .subtitle {
+            color: #6b7280;
+            font-size: 0.9rem;
+            font-weight: 400;
         }
         
-        button {
-            padding: 0.75rem 1.5rem;
-            font-size: 1rem;
-            background-color: #4f46e5;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
+        .upload-section {
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            border: 2px dashed #cbd5e1;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.25rem;
+            text-align: center;
             transition: all 0.3s ease;
-            width: 100%;
-            margin-top: 0.5rem;
+            position: relative;
+            overflow: hidden;
         }
         
-        button:hover {
-            background-color: #3730a3;
+        .upload-section:hover {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
             transform: translateY(-2px);
         }
         
-        #status {
-            margin-top: 1.3rem;
-            color: #34495e;
+        .upload-section.dragover {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            transform: scale(1.02);
+        }
+        
+        .upload-icon {
+            font-size: 2.25rem;
+            color: #94a3b8;
+            margin-bottom: 0.6rem;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-section:hover .upload-icon {
+            color: #667eea;
+            transform: scale(1.1);
+        }
+        
+        .upload-text {
+            color: #64748b;
+            font-size: 0.95rem;
             font-weight: 500;
+            margin-bottom: 0.4rem;
+        }
+        
+        .upload-subtext {
+            color: #94a3b8;
+            font-size: 0.8rem;
+            margin-bottom: 0.875rem;
+        }
+        
+        input[type="file"] {
+            width: 100%;
+            padding: 0.75rem;
+            margin: 0.6rem 0;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: white;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        input[type="file"]:hover {
+            border-color: #667eea;
+            background: #f8fafc;
+            transform: translateY(-1px);
+        }
+        
+        input[type="file"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 0.75rem 1.125rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+        
+        .btn-danger:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        #status {
+            margin-top: 1rem;
+            padding: 0.75rem 1.125rem;
+            border-radius: 10px;
+            font-weight: 500;
+            text-align: center;
+            min-height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+        }
+        
+        #status.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .status-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+        
+        .status-error {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+        
+        .status-info {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+            margin: 1.25rem 0;
+        }
+        
+        .action-section {
+            text-align: center;
+        }
+        
+        .action-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.75rem;
+        }
+        /* Back to main link */
+        
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #667eea;
+            padding: 0.6rem 0.875rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            z-index: 10;
+        }
+        
+        .back-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+            background: white;
+        }
+        /* Mobile responsive */
+        
+        @media (max-width: 520px) {
+            body {
+                padding: 15px;
+            }
+            .container {
+                padding: 2rem 1.5rem;
+                max-width: 100%;
+                border-radius: 16px;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            .upload-section {
+                padding: 1.5rem;
+            }
+            .upload-icon {
+                font-size: 2.25rem;
+            }
+            .back-link {
+                position: relative;
+                top: auto;
+                left: auto;
+                margin-bottom: 1rem;
+                align-self: flex-start;
+            }
+        }
+        
+        @media (max-height: 700px) {
+            .container {
+                padding: 1.75rem 2rem;
+            }
+            .header {
+                margin-bottom: 1.5rem;
+            }
+            .upload-section {
+                padding: 1.5rem;
+                margin-bottom: 1.25rem;
+            }
         }
     </style>
 </head>
 
 <body>
+    <a href="index.html" class="back-link">
+        ← Back to Main
+    </a>
+
     <div class="container">
-        <h1>Admin Panel - Upload Roll Range CSV</h1>
-        <form id="uploadForm">
-            <input type="file" id="csvFile" accept=".csv" required />
-            <button type="submit">Upload CSV</button>
-        </form>
-        <button onclick="resetData()">🧹 Reset / Clear All Data</button>
+        <div class="header">
+            <h1>⚙️ Admin Panel</h1>
+            <p class="subtitle">Manage examination room data</p>
+        </div>
+
+        <div class="upload-section" id="uploadSection">
+            <div class="upload-icon">📁</div>
+            <div class="upload-text">Upload CSV File</div>
+            <div class="upload-subtext">Drag & drop or click to select</div>
+
+            <form id="uploadForm">
+                <input type="file" id="csvFile" accept=".csv" required />
+                <button type="submit" class="btn btn-primary" id="uploadBtn">
+                    📤 Upload CSV
+                </button>
+            </form>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="action-section">
+            <div class="action-title">Data Management</div>
+            <button class="btn btn-danger" id="clearBtn" onclick="resetData()">
+                🧹 Clear All Data
+            </button>
+        </div>
+
         <div id="status"></div>
     </div>
 
     <script>
+        const statusDiv = document.getElementById('status');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const uploadSection = document.getElementById('uploadSection');
+        const csvFileInput = document.getElementById('csvFile');
+
+        // Helper function to show status
+        function showStatus(message, type = 'info') {
+            statusDiv.className = `show status-${type}`;
+            statusDiv.innerHTML = message;
+
+            // Auto hide after 5 seconds for success messages
+            if (type === 'success') {
+                setTimeout(() => {
+                    statusDiv.classList.remove('show');
+                }, 5000);
+            }
+        }
+
+        function hideStatus() {
+            statusDiv.classList.remove('show');
+        }
+
+        // Test server connection function
+        async function testServerConnection() {
+            try {
+                showStatus('🔄 Checking server connection...', 'info');
+
+                const response = await fetch('http://localhost:3000/health', {
+                    method: 'GET',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    showStatus('✅ Server connected successfully!', 'success');
+                    return true;
+                } else {
+                    throw new Error(`Server responded with status: ${response.status}`);
+                }
+            } catch (error) {
+                console.log('Server connection test failed:', error);
+                // Don't show error immediately - let user try to use the app
+                hideStatus();
+                return false;
+            }
+        }
+
+        // Drag and drop functionality
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadSection.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadSection.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadSection.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            uploadSection.classList.add('dragover');
+        }
+
+        function unhighlight(e) {
+            uploadSection.classList.remove('dragover');
+        }
+
+        uploadSection.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+
+            if (files.length > 0) {
+                csvFileInput.files = files;
+                showStatus(`📁 File "${files[0].name}" selected`, 'info');
+            }
+        }
+
+        // File input change event
+        csvFileInput.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                showStatus(`📁 File "${this.files[0].name}" selected`, 'info');
+            }
+        });
+
         // CSV Upload
         document.getElementById('uploadForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const file = document.getElementById('csvFile').files[0];
+
+            const file = csvFileInput.files[0];
+            if (!file) {
+                showStatus('❌ Please select a CSV file first!', 'error');
+                return;
+            }
+
+            // Validate file type
+            if (!file.name.toLowerCase().endsWith('.csv')) {
+                showStatus('❌ Please select a valid CSV file!', 'error');
+                return;
+            }
+
             const formData = new FormData();
             formData.append('file', file);
+
+            // Show loading state
+            uploadBtn.disabled = true;
+            uploadBtn.innerHTML = '<div class="loading-spinner"></div>Uploading...';
+            showStatus('<div class="loading-spinner"></div>Uploading CSV file...', 'info');
 
             fetch('http://localhost:3000/upload-csv', {
                     method: 'POST',
                     body: formData
                 })
-                .then(response => response.text())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Server error: ${response.status}`);
+                    }
+                    return response.text();
+                })
                 .then(data => {
-                    document.getElementById('status').innerText = '✅ ' + data;
+                    showStatus('✅ ' + data, 'success');
+                    // Reset form
+                    csvFileInput.value = '';
+                    uploadSection.classList.remove('dragover');
                 })
                 .catch(err => {
-                    document.getElementById('status').innerText = '❌ Upload failed: ' + err.message;
+                    console.error('Upload error:', err);
+                    let errorMessage = 'Upload failed';
+
+                    if (err.message.includes('Failed to fetch')) {
+                        errorMessage = 'Cannot connect to server. Make sure server is running on port 3000.';
+                    } else {
+                        errorMessage = 'Upload failed: ' + err.message;
+                    }
+
+                    showStatus('❌ ' + errorMessage, 'error');
+                })
+                .finally(() => {
+                    // Reset button state
+                    uploadBtn.disabled = false;
+                    uploadBtn.innerHTML = '📤 Upload CSV';
                 });
         });
 
-        // Reset Data
+        // Reset Data - Enhanced function
         function resetData() {
+            // Enhanced confirmation dialog
+            const confirmMessage = `⚠️ WARNING ⚠️\n\nThis will permanently delete all room data from the system.\n\nAre you absolutely sure you want to continue?\n\nThis action cannot be undone!`;
+
+            if (!confirm(confirmMessage)) {
+                return;
+            }
+
+            // Double confirmation for safety
+            if (!confirm('Last chance! Click OK to permanently delete all data.')) {
+                return;
+            }
+
+            // Show loading state
+            clearBtn.disabled = true;
+            clearBtn.innerHTML = '<div class="loading-spinner"></div>Clearing...';
+            showStatus('<div class="loading-spinner"></div>Clearing all data...', 'info');
+
             fetch('http://localhost:3000/reset-data', {
-                    method: 'POST'
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
                 })
-                .then(res => res.text())
-                .then(msg => {
-                    document.getElementById('status').innerText = '🧹 ' + msg;
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Server error: ${response.status}`);
+                    }
+                    return response.text();
                 })
-                .catch(err => {
-                    document.getElementById('status').innerText = '❌ Reset failed: ' + err.message;
+                .then(message => {
+                    showStatus('🧹 ' + message + ' All examination room data has been successfully cleared.', 'success');
+                    console.log('Data cleared successfully');
+                })
+                .catch(error => {
+                    console.error('Reset error:', error);
+                    let errorMessage = 'Reset failed';
+
+                    if (error.message.includes('Failed to fetch')) {
+                        errorMessage = 'Cannot connect to server. Make sure server is running on port 3000.';
+                    } else {
+                        errorMessage = 'Reset failed: ' + error.message;
+                    }
+
+                    showStatus('❌ ' + errorMessage, 'error');
+                })
+                .finally(() => {
+                    // Reset button state
+                    clearBtn.disabled = false;
+                    clearBtn.innerHTML = '🧹 Clear All Data';
                 });
         }
+
+        // Test server connection on page load (optional and non-intrusive)
+        window.addEventListener('load', function() {
+            // Optional: Test connection but don't show errors immediately
+            // This allows users to try the app even if the initial health check fails
+            setTimeout(() => {
+                testServerConnection();
+            }, 1000);
+        });
+
+        // Enhanced visual feedback
+        uploadBtn.addEventListener('mouseenter', function() {
+            if (!this.disabled) {
+                this.style.transform = 'translateY(-2px)';
+            }
+        });
+
+        uploadBtn.addEventListener('mouseleave', function() {
+            if (!this.disabled) {
+                this.style.transform = 'translateY(0)';
+            }
+        });
+
+        clearBtn.addEventListener('mouseenter', function() {
+            if (!this.disabled) {
+                this.style.transform = 'translateY(-2px)';
+            }
+        });
+
+        clearBtn.addEventListener('mouseleave', function() {
+            if (!this.disabled) {
+                this.style.transform = 'translateY(0)';
+            }
+        });
     </script>
 </body>
 
