@@ -1,3 +1,4 @@
 subject,shift,roll_start,roll_end,room,building,floor
-Maths,Morning,1001,1020,A-101,Main Block,1st Floor
-Physics,Afternoon,1021,1040,B-201,Science Block,2nd Floor
+Math,morning,1001,1020,Room 101,Science Block,1
+Math,afternoon,1021,1040,Room 102,Science Block,2
+Physics,afternoon,2021,2040,Room 202,Physics Block,1

@@ -35,6 +35,7 @@ function loadCSVData() {
         });
 }
 
+// Route: Get room info
 app.post('/get-room', (req, res) => {
     const { subject, shift, roll } = req.body;
     const key = `${subject}_${shift}_${roll}`;
@@ -49,6 +50,8 @@ app.post('/get-room', (req, res) => {
         res.status(404).json({ message: 'Room not found' });
     }
 });
+
+// Route: Upload new CSV file
 app.post('/upload-csv', upload.single('file'), (req, res) => {
     const filePath = req.file.path;
     roomData = [];
@@ -75,7 +78,13 @@ app.post('/upload-csv', upload.single('file'), (req, res) => {
         });
 });
 
+// ✅ Route: Reset all data
+app.post('/reset-data', (req, res) => {
+    roomData = [];
+    res.send('All room data has been cleared.');
+});
 
+// Start the server
 loadCSVData();
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

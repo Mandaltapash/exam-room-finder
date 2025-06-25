@@ -1,19 +1,93 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Panel - Upload CSV</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to right, #e0ecff, #dbeeff), url('https://www.transparenttextures.com/patterns/cubes.png');
+            background-repeat: repeat;
+            background-size: cover;
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 14px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        h1 {
+            margin-bottom: 1.6rem;
+            font-size: 1.5rem;
+            color: #2c3e50;
+        }
+        
+        input[type="file"] {
+            margin-bottom: 1rem;
+            width: 100%;
+            padding: 0.6rem;
+            font-size: 0.95rem;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+        
+        button {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            background-color: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+        
+        button:hover {
+            background-color: #3730a3;
+            transform: translateY(-2px);
+        }
+        
+        #status {
+            margin-top: 1.3rem;
+            color: #34495e;
+            font-weight: 500;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Admin Panel - Upload Roll Range CSV</h1>
-    <form id="uploadForm">
-        <input type="file" id="csvFile" accept=".csv" required />
-        <button type="submit">Upload CSV</button>
-    </form>
-    <div id="status"></div>
+    <div class="container">
+        <h1>Admin Panel - Upload Roll Range CSV</h1>
+        <form id="uploadForm">
+            <input type="file" id="csvFile" accept=".csv" required />
+            <button type="submit">Upload CSV</button>
+        </form>
+        <button onclick="resetData()">🧹 Reset / Clear All Data</button>
+        <div id="status"></div>
+    </div>
 
     <script>
+        // CSV Upload
         document.getElementById('uploadForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const file = document.getElementById('csvFile').files[0];
@@ -21,17 +95,32 @@
             formData.append('file', file);
 
             fetch('http://localhost:3000/upload-csv', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('status').innerText = data;
-            })
-            .catch(err => {
-                document.getElementById('status').innerText = 'Upload failed: ' + err.message;
-            });
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('status').innerText = '✅ ' + data;
+                })
+                .catch(err => {
+                    document.getElementById('status').innerText = '❌ Upload failed: ' + err.message;
+                });
         });
+
+        // Reset Data
+        function resetData() {
+            fetch('http://localhost:3000/reset-data', {
+                    method: 'POST'
+                })
+                .then(res => res.text())
+                .then(msg => {
+                    document.getElementById('status').innerText = '🧹 ' + msg;
+                })
+                .catch(err => {
+                    document.getElementById('status').innerText = '❌ Reset failed: ' + err.message;
+                });
+        }
     </script>
 </body>
+
 </html>
