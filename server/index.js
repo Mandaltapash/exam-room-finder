@@ -5,8 +5,11 @@ const upload = multer({ dest: 'uploads/' });
 const fs = require('fs');
 const csv = require('csv-parser');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
+
 const app = express();
 const PORT = 3000;
+const SECRET = 'examroomfinder123';
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -35,7 +38,7 @@ function loadCSVData() {
         });
 }
 
-// Route: Get room info
+// ✅ Room Info Route
 app.post('/get-room', (req, res) => {
     const { subject, shift, roll } = req.body;
     const key = `${subject}_${shift}_${roll}`;
@@ -51,7 +54,7 @@ app.post('/get-room', (req, res) => {
     }
 });
 
-// Route: Upload new CSV file
+// ✅ Upload New CSV File
 app.post('/upload-csv', upload.single('file'), (req, res) => {
     const filePath = req.file.path;
     roomData = [];
@@ -78,14 +81,44 @@ app.post('/upload-csv', upload.single('file'), (req, res) => {
         });
 });
 
-// ✅ Route: Reset all data
+// ✅ Reset All Data
 app.post('/reset-data', (req, res) => {
     roomData = [];
     res.send('All room data has been cleared.');
 });
 
-// Start the server
+// ✅ Health check (optional)
+app.get('/health', (req, res) => {
+    res.send('OK');
+});
+
+
+// 🔒 In-memory user list
+const users = [];
+
+// ✅ Register Route
+app.post('/register', (req, res) => {
+    const { username, password } = req.body;
+    if (users.find(u => u.username === username)) {
+        return res.status(400).json({ message: 'User already exists' });
+    }
+    users.push({ username, password });
+    res.json({ message: 'User registered successfully' });
+});
+
+// ✅ Login Route
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    const user = users.find(u => u.username === username && u.password === password);
+    if (!user) {
+        return res.status(401).json({ message: 'Invalid credentials' });
+    }
+    const token = jwt.sign({ username }, SECRET, { expiresIn: '1h' });
+    res.json({ message: 'Login successful', token });
+});
+
+// ✅ Start server
 loadCSVData();
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
 });
