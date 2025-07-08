@@ -419,7 +419,7 @@
             try {
                 showStatus('🔄 Checking server connection...', 'info');
 
-                const response = await fetch('http://localhost:3000/health', {
+                const response = await fetch('https://exam-room-backend.onrender.com/health', {
                     method: 'GET',
                     mode: 'cors',
                     headers: {
@@ -510,7 +510,7 @@
             uploadBtn.innerHTML = '<div class="loading-spinner"></div>Uploading...';
             showStatus('<div class="loading-spinner"></div>Uploading CSV file...', 'info');
 
-            fetch('http://localhost:3000/upload-csv', {
+            fetch('https://exam-room-backend.onrender.com/upload-csv', {
                     method: 'POST',
                     body: formData
                 })
@@ -564,7 +564,7 @@
             clearBtn.innerHTML = '<div class="loading-spinner"></div>Clearing...';
             showStatus('<div class="loading-spinner"></div>Clearing all data...', 'info');
 
-            fetch('http://localhost:3000/reset-data', {
+            fetch('https://exam-room-backend.onrender.com/reset-data', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

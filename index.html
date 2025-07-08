@@ -349,7 +349,7 @@
             const roll = document.getElementById('roll').value.trim();
 
             try {
-                const res = await fetch('http://localhost:3000/get-room', {
+                const res = await fetch('https://exam-room-backend.onrender.com/get-room', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
