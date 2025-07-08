@@ -9,7 +9,7 @@ const RoomSchema = new mongoose.Schema({
     shift: {
         type: String,
         required: true,
-        enum: ['morning', 'afternoon', 'evening']
+        enum: ['Morning', 'Afternoon', 'Evening']
     },
     roll: {
         type: Number,
