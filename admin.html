@@ -532,7 +532,7 @@
                     let errorMessage = 'Upload failed';
 
                     if (err.message.includes('Failed to fetch')) {
-                        errorMessage = 'Cannot connect to server. Make sure server is running on port 3000.';
+                        errorMessage = 'Cannot connect to server. Please check your internet or try again later.';
                     } else {
                         errorMessage = 'Upload failed: ' + err.message;
                     }
