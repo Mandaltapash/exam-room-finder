@@ -510,7 +510,8 @@
             uploadBtn.innerHTML = '<div class="loading-spinner"></div>Uploading...';
             showStatus('<div class="loading-spinner"></div>Uploading CSV file...', 'info');
 
-            fetch('https://exam-room-backend.onrender.com/upload-csv', {
+            fetch('https://exam-room-finder.onrender.com/upload-csv', {
+
                     method: 'POST',
                     body: formData
                 })
@@ -564,7 +565,7 @@
             clearBtn.innerHTML = '<div class="loading-spinner"></div>Clearing...';
             showStatus('<div class="loading-spinner"></div>Clearing all data...', 'info');
 
-            fetch('https://exam-room-backend.onrender.com/reset-data', {
+            fetch('https://exam-room-finder.onrender.com/reset-data', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
