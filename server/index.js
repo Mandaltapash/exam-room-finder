@@ -1,3 +1,11 @@
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb+srv://tapashmandal26145:tapash123@cluster0.rvvsjew.mongodb.net/exam-room-db?retryWrites=true&w=majority&appName=Cluster0', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    }).then(() => console.log("✅ MongoDB Connected"))
+    .catch((err) => console.error("❌ MongoDB Error:", err));
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
