@@ -1,3 +1,5 @@
+const mongoose = require('mongoose'); // 👈 ye line add karo
+
 const RoomSchema = new mongoose.Schema({
     subject: {
         type: String,
@@ -26,3 +28,5 @@ const RoomSchema = new mongoose.Schema({
         required: true
     }
 });
+
+module.exports = mongoose.model('Room', RoomSchema); // 👈 ye bhi add karo
